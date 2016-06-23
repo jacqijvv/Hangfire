@@ -35,7 +35,7 @@ namespace Hangfire.Core.Tests
         public void StaticCreate_ShouldCreateAJobInTheGivenState()
         {
             _client.Object.Create(() => StaticMethod(), _state.Object);
-            
+
             _client.Verify(x => x.Create(It.IsNotNull<Job>(), _state.Object));
         }
 
@@ -253,6 +253,24 @@ namespace Hangfire.Core.Tests
             _client.Verify(x => x.ChangeState(JobId, It.IsAny<EnqueuedState>(), FailedState.StateName));
         }
 
+        [Fact]
+        public void StaticEnqueue_ThrowsAnException_WhenQueueNameIsNull()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(
+               () => _client.Object.Enqueue(() => StaticMethod(), null));
+
+            Assert.Equal("queueName", exception.ParamName); 
+        }
+
+        [Fact]
+        public void StaticEnqueue_ThrowsAnException_WhenQueueNameIsInvalid()
+        {
+            var exception = Assert.Throws<ArgumentException>(
+               () => _client.Object.Enqueue(() => StaticMethod(), "QuE3_Name-#10"));
+
+            Assert.Equal("queueName", exception.ParamName);
+        }
+        
         public static void StaticMethod()
         {
         }

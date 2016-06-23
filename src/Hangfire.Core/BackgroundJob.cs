@@ -90,6 +90,27 @@ namespace Hangfire
         }
 
         /// <summary>
+        /// Creates a new fire-and-forget job based on a given method call expression. 
+        /// Allows you to specify a queue name.
+        /// </summary>
+        /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
+        /// <param name="queueName">The name of the queue to run the fire-and-forget job on.</param>
+        /// <returns>Unique identifier of a background job.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="methodCall"/> is <see langword="null"/>.
+        /// <paramref name="queueName"/> is <see langword="null"/>.
+        /// </exception>
+        /// 
+        /// <seealso cref="EnqueuedState"/>
+        /// <seealso cref="O:Hangfire.IBackgroundJobClient.Enqueue"/>
+        public static string Enqueue([NotNull, InstantHandle] Expression<Action> methodCall, [NotNull] string queueName)
+        {
+            var client = ClientFactory();
+            return client.Enqueue(methodCall, queueName);
+        }
+
+        /// <summary>
         /// Creates a new fire-and-forget job based on a given method call expression.
         /// </summary>
         /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
@@ -105,6 +126,28 @@ namespace Hangfire
         {
             var client = ClientFactory();
             return client.Enqueue(methodCall);
+        }
+
+
+        /// <summary>
+        /// Creates a new fire-and-forget job based on a given method call expression.
+        /// Allows you to specify a queue name.
+        /// </summary>
+        /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
+        /// <param name="queueName">The name of the queue to run the fire-and-forget job on.</param>
+        /// <returns>Unique identifier of a background job.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="methodCall"/> is <see langword="null"/>.
+        /// <paramref name="queueName"/> is <see langword="null"/>.
+        /// </exception>
+        /// 
+        /// <seealso cref="EnqueuedState"/>
+        /// <seealso cref="O:Hangfire.IBackgroundJobClient.Enqueue"/>
+        public static string Enqueue([NotNull, InstantHandle] Expression<Func<Task>> methodCall, [NotNull] string queueName)
+        {
+            var client = ClientFactory();
+            return client.Enqueue(methodCall, queueName);
         }
 
         /// <summary>
@@ -127,6 +170,27 @@ namespace Hangfire
 
         /// <summary>
         /// Creates a new fire-and-forget job based on a given method call expression.
+        /// Allows you to specify a queue name.
+        /// </summary>
+        /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
+        /// <param name="queueName">The name of the queue to run the fire-and-forget job on.</param>
+        /// <returns>Unique identifier of a background job.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="methodCall"/> is <see langword="null"/>.
+        /// <paramref name="queueName"/> is <see langword="null"/>.
+        /// </exception>
+        /// 
+        /// <seealso cref="EnqueuedState"/>
+        /// <seealso cref="O:Hangfire.IBackgroundJobClient.Enqueue"/>
+        public static string Enqueue<T>([NotNull, InstantHandle] Expression<Action<T>> methodCall, [NotNull] string queueName)
+        {
+            var client = ClientFactory();
+            return client.Enqueue(methodCall, queueName);
+        }
+
+        /// <summary>
+        /// Creates a new fire-and-forget job based on a given method call expression.
         /// </summary>
         /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
         /// <returns>Unique identifier of a background job.</returns>
@@ -141,6 +205,27 @@ namespace Hangfire
         {
             var client = ClientFactory();
             return client.Enqueue(methodCall);
+        }
+
+        /// <summary>
+        /// Creates a new fire-and-forget job based on a given method call expression.
+        /// Allows you to specify a queue name.
+        /// </summary>
+        /// <param name="methodCall">Method call expression that will be marshalled to a server.</param>
+        /// <param name="queueName">The name of the queue to run the fire-and-forget job on.</param>
+        /// <returns>Unique identifier of a background job.</returns>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="methodCall"/> is <see langword="null"/>.
+        /// <paramref name="queueName"/> is <see langword="null"/>.
+        /// </exception>
+        /// 
+        /// <seealso cref="EnqueuedState"/>
+        /// <seealso cref="O:Hangfire.IBackgroundJobClient.Enqueue"/>
+        public static string Enqueue<T>([NotNull, InstantHandle] Expression<Func<T, Task>> methodCall, [NotNull] string queueName)
+        {
+            var client = ClientFactory();
+            return client.Enqueue(methodCall, queueName);
         }
 
         /// <summary>

@@ -53,6 +53,29 @@ namespace Hangfire
         /// <summary>
         /// Creates a background job based on a specified lambda expression 
         /// and places it into its actual queue. 
+        /// Instead of specifying a queue using the <see cref="QueueAttribute"/>, 
+        /// you can specify the queue name.
+        /// </summary>
+        /// 
+        /// <param name="client">A job client instance.</param>
+        /// <param name="methodCall">Static method call expression that will be marshalled to the Server.</param>
+        /// <param name="queueName">Specifies the queue name you would like to place the job on</param>
+        /// <returns>Unique identifier of the created job.</returns>
+        public static string Enqueue(
+            [NotNull] this IBackgroundJobClient client, 
+            [NotNull, InstantHandle] Expression<Action> methodCall, 
+            [NotNull] string queueName)
+        {
+            if (client == null) throw new ArgumentNullException(nameof(client));
+            if (string.IsNullOrWhiteSpace(queueName)) throw new ArgumentNullException(nameof(queueName));
+            EnqueuedState.ValidateQueueName(nameof(queueName), queueName);
+
+            return client.Create(methodCall, new EnqueuedState(queueName));
+        }
+
+        /// <summary>
+        /// Creates a background job based on a specified lambda expression 
+        /// and places it into its actual queue. 
         /// Please, see the <see cref="QueueAttribute"/> to learn how to 
         /// place the job on a non-default queue.
         /// </summary>
@@ -67,6 +90,29 @@ namespace Hangfire
             if (client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Create(methodCall, new EnqueuedState());
+        }
+
+        /// <summary>
+        /// Creates a background job based on a specified lambda expression 
+        /// and places it into its actual queue. 
+        /// Instead of specifying a queue using the <see cref="QueueAttribute"/>, 
+        /// you can specify the queue name.
+        /// </summary>
+        /// 
+        /// <param name="client">A job client instance.</param>
+        /// <param name="methodCall">Static method call expression that will be marshalled to the Server.</param>
+        /// <param name="queueName">Specifies the queue name you would like to place the job on</param>
+        /// <returns>Unique identifier of the created job.</returns>
+        public static string Enqueue(
+            [NotNull] this IBackgroundJobClient client,
+            [NotNull, InstantHandle] Expression<Func<Task>> methodCall, 
+            [NotNull] string queueName)
+        {
+            if (client == null) throw new ArgumentNullException(nameof(client));
+            if (string.IsNullOrWhiteSpace(queueName)) throw new ArgumentNullException(nameof(queueName));
+            EnqueuedState.ValidateQueueName(nameof(queueName), queueName);
+
+            return client.Create(methodCall, new EnqueuedState(queueName));
         }
 
         /// <summary>
@@ -92,6 +138,30 @@ namespace Hangfire
         /// <summary>
         /// Creates a background job based on a specified lambda expression 
         /// and places it into its actual queue. 
+        /// Instead of specifying a queue using the <see cref="QueueAttribute"/>, 
+        /// you can specify the queue name.
+        /// </summary>
+        /// 
+        /// <typeparam name="T">Type whose method will be invoked during job processing.</typeparam>
+        /// <param name="client">A job client instance.</param>
+        /// <param name="methodCall">Instance method call expression that will be marshalled to the Server.</param>
+        /// <param name="queueName">Specifies the queue name you would like to place the job on</param>
+        /// <returns>Unique identifier of the created job.</returns>
+        public static string Enqueue<T>(
+            [NotNull] this IBackgroundJobClient client, 
+            [NotNull, InstantHandle] Expression<Action<T>> methodCall, 
+            [NotNull] string queueName)
+        {
+            if (client == null) throw new ArgumentNullException(nameof(client));
+            if (string.IsNullOrWhiteSpace(queueName)) throw new ArgumentNullException(nameof(queueName));
+            EnqueuedState.ValidateQueueName(nameof(queueName), queueName);
+
+            return client.Create(methodCall, new EnqueuedState(queueName));
+        }
+
+        /// <summary>
+        /// Creates a background job based on a specified lambda expression 
+        /// and places it into its actual queue. 
         /// Please, see the <see cref="QueueAttribute"/> to learn how to 
         /// place the job on a non-default queue.
         /// </summary>
@@ -107,6 +177,30 @@ namespace Hangfire
             if (client == null) throw new ArgumentNullException(nameof(client));
 
             return client.Create(methodCall, new EnqueuedState());
+        }
+        
+        /// <summary>
+        /// Creates a background job based on a specified lambda expression 
+        /// and places it into its actual queue. 
+        /// Instead of specifying a queue using the <see cref="QueueAttribute"/>, 
+        /// you can specify the queue name.
+        /// </summary>
+        /// 
+        /// <typeparam name="T">Type whose method will be invoked during job processing.</typeparam>
+        /// <param name="client">A job client instance.</param>
+        /// <param name="methodCall">Instance method call expression that will be marshalled to the Server.</param>
+        /// <param name="queueName">Specifies the queue name you would like to place the job on</param>
+        /// <returns>Unique identifier of the created job.</returns>
+        public static string Enqueue<T>(
+            [NotNull] this IBackgroundJobClient client,
+            [NotNull, InstantHandle] Expression<Func<T, Task>> methodCall, 
+            [NotNull] string queueName)
+        {
+            if (client == null) throw new ArgumentNullException(nameof(client));
+            if (string.IsNullOrWhiteSpace(queueName)) throw new ArgumentNullException(nameof(queueName));
+            EnqueuedState.ValidateQueueName(nameof(queueName), queueName);
+
+            return client.Create(methodCall, new EnqueuedState(queueName));
         }
 
         /// <summary>
